@@ -12,7 +12,8 @@ spec:
     spec:
       containers:
       - name: dashflux
-        image: mainflux/dashflux:latest
+#        image: mainflux/dashflux:latest
+        image: juanman/dashflux:original
         imagePullPolicy: Always
         ports:
         - containerPort: 3000

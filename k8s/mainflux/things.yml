@@ -71,7 +71,8 @@ spec:
     spec:
       containers:
       - name: things
-        image: mainflux/things:latest
+#        image: mainflux/things:latest
+        image: juanman/things:original
         ports:
         - containerPort: 8182
           name: things-http

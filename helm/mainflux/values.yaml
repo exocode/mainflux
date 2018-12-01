@@ -4,14 +4,24 @@
 
 
 # images
-usersImage: mainflux/users:latest
+#usersImage: mainflux/users:latest
+usersImage: juanman/users:original
+#thingsImage: mainflux/things:latest
+thingsImage: juanman/things:original
 usersPostgresImage: postgres:10.2-alpine
 thingsPostgresImage: postgres:10.2-alpine
 nginxImage: nginx:1.13-alpine
 natsImage: nats:1.1.0
-httpAdapterImage: mainflux/http:latest
-wsAdapterImage: mainflux/ws:latest
-mqttAdapterImage: mainflux/mqtt:latest
+#httpAdapterImage: mainflux/http:latest
+httpAdapterImage: juanman/http:original
+#wsAdapterImage: mainflux/ws:latest
+wsAdapterImage: juanman/ws:original
+#mqttAdapterImage: mainflux/mqtt:latest
+mqttAdapterImage: juanman/mqtt:original
+#coapAdapterImage: mainflux/coap:latest
+coapAdapterImage: juanman/coap:original
+#normalizerImage: mainflux/normalizer:latest
+normalizerImage: juanman/normalizer:original
 
 nginx:
   fullname: "mainflux-nginx"

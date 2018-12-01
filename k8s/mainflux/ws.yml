@@ -68,7 +68,8 @@ spec:
     spec:
       containers:
       - name: mainflux-ws
-        image: mainflux/ws:latest
+#        image: mainflux/ws:latest
+        image: juanman/ws:original
         ports:
         - containerPort: 8186
         env:
