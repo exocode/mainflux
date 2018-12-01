@@ -1,31 +1,31 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: dashflux
+  name: {{ .Values.dashflux.name }}
   labels:
     component: dashflux
 spec:
   template:
     metadata:
       labels:
-        component: dashflux
+        component: {{ .Values.dashflux.name }}
     spec:
       containers:
       - name: dashflux
-        image: mainflux/dashflux:latest
+        image: {{ .Values.dashfluxImage }}
         imagePullPolicy: Always
         ports:
-        - containerPort: 3000
+        - containerPort: {{ .Values.dashflux.port }}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: dashflux
+  name: {{ .Values.dashflux.name }}
   labels:
-    component: dashflux
+    component: {{ .Values.dashflux.name }}
 spec:
   selector:
-    component: dashflux
+    component: {{ .Values.dashflux.name }}
   ports:
-  - port: 3000
+  - port: {{ .Values.dashflux.port }}
   # type: LoadBalancer

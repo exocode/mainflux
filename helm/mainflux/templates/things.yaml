@@ -1,53 +1,57 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: things
+  name: {{ .Values.things.name }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      component: things
+      component: {{ .Values.things.name }}
   template:
     metadata:
       labels:
-        component: things
+        component: {{ .Values.things.name }}
     spec:
       containers:
-      - name: things
-        image: mainflux/things:latest
+      - name: {{ .Values.things.name }}
+        image: {{ .Values.thingsImage }}
         ports:
-        - containerPort: 8182
-          name: things-http
-        - containerPort: 8183
-          name: things-grpc
+        - containerPort: {{ .Values.things.container_ports.http-port }}
+          name: {{ .Values.things.container_ports.http-name }}
+        - containerPort: {{ .Values.things.container_ports.grpc-port }}
+          name: {{ .Values.things.container_ports.grpc-name }}
         resources:
 {{ toYaml .Values.defaultResources | indent 10 }}
         env:
-        - name: MF_THINGS_DB_HOST
-          value: "mainflux-things-postgres"
-        - name: MF_THINGS_DB_PORT
-          value: "5432"
-        - name: MF_THINGS_HTTP_PORT
-          value: "8182"
-        - name: MF_THINGS_GRPC_PORT
-          value: "8183"
-        - name: MF_USERS_URL
-          value: "users:8181"
-        - name: MF_THINGS_SECRET
-          value: "test-secret"
+        {{- range $key, $value := .Values.adapter.http.env }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end }}
+#        - name: MF_THINGS_DB_HOST
+#          value: "mainflux-things-postgres"
+#        - name: MF_THINGS_DB_PORT
+#          value: "5432"
+#        - name: MF_THINGS_HTTP_PORT
+#          value: "8182"
+#        - name: MF_THINGS_GRPC_PORT
+#          value: "8183"
+#        - name: MF_USERS_URL
+#          value: "users:8181"
+#        - name: MF_THINGS_SECRET
+#          value: "test-secret"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: things
+  name: {{ .Values.things.name }}
   labels:
-    component: things
+    component: {{ .Values.things.name }}
 spec:
   ports:
-  - port: 8182
-    name: http
-  - port: 8183
-    name: grpc
+  - port: {{ .Values.things.service_ports.http-port }}
+    name: {{ .Values.things.service_ports.http-name }}
+  - port: {{ .Values.things.service_ports.grpc-port }}
+    name: {{ .Values.things.service_ports.grpc-name }}
   selector:
-    component: things
+    component: {{ .Values.things.name }}
   # type: LoadBalancer

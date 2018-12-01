@@ -1,35 +1,39 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: normalizer
+  name: {{ .Values.normalizer.name }}
   labels:
-    component: normalizer
+    component: {{ .Values.normalizer.name }}
 spec:
   replicas: 3
   template:
     metadata:
       labels:
-        component: normalizer
+        component: {{ .Values.normalizer.name }}
     spec:
       containers:
-      - name: mainflux-normalizer
-        image: mainflux/normalizer:latest
+      - name: {{ .Values.normalizer.name }}
+        image: {{ .Values.normalizerImage }}
         imagePullPolicy: Always
         env:
-        - name: MF_NATS_URL
-          value: "nats://nats:4222"
-        - name: MF_NORMALIZER_PORT
-          value: "8184"
+        {{- range $key, $value := .Values.adapter.http.env }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end }}
+#        - name: MF_NATS_URL
+#          value: "nats://nats:4222"
+#        - name: MF_NORMALIZER_PORT
+#          value: "8184"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: normalizer
+  name: {{ .Values.normalizer.name }}
   labels:
-    component: normalizer
+    component: {{ .Values.normalizer.name }}
 spec:
   selector:
-    component: normalizer
+    component: {{ .Values.normalizer.name }}
   ports:
-  - port: 8184
+  - port: {{ .Values.normalizer.port }}
   clusterIP: None

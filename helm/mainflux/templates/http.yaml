@@ -16,7 +16,7 @@ spec:
         image: {{ .Values.httpAdapterImage }}
         imagePullPolicy: Always
         ports:
-        - containerPort: 8185
+        - containerPort: {{ .Values.adapter.http.port }}
         env:
         {{- range $key, $value := .Values.adapter.http.env }}
         - name: {{ $key }}
@@ -33,6 +33,6 @@ spec:
   selector:
     component: {{ .Values.adapter.http.name }}
   ports:
-  - port: 8185
+  - port: {{ .Values.adapter.http.port }}
   # type: LoadBalancer
 

@@ -38,13 +38,70 @@ nats:
     cluster: 6222
     monitor: 8222
 
+dashflux:
+  name: "dashflux"
+  port: 3000
+    
+normalizer:
+  name: "normalizer"
+  port: 8184
+  env:
+      MF_NATS_URL: "nats://nats:4222"
+      MF_NORMALIZER_PORT: "8184"
+
+users:
+  name: "users"
+  container_ports:
+    http-name: "users-http"
+    http-port: 8180
+    grpc-name: "users-grpc"
+    grpc-port: 8181
+  service_ports:
+    http-name: "http"
+    http-port: 8180
+    http-name: "grpc"
+    http-port: 8181
+  env:
+    MF_USERS_DB_HOST: "mainflux-users-postgres"
+    MF_USERS_HTTP_PORT: "8180"
+    MF_USERS_GRPC_PORT: "8181"
+    MF_USERS_SECRET: "test-secret"
+
+things:
+  name: "things"
+  container_ports:
+    http-name: "things-http"
+    http-port: 8182
+    grpc-name: "things-grpc"
+    grpc-port: 8183
+  service_ports:
+    http-name: "http"
+    http-port: 8180
+    http-name: "grpc"
+    http-port: 8181
+  env:
+    MF_THINGS_DB_HOST: "mainflux-things-postgres"
+    MF_THINGS_DB_PORT: "5432"
+    MF_THINGS_HTTP_PORT: "8182"
+    MF_THINGS_GRPC_PORT: "8183"
+    MF_USERS_URL: "users:8181"
+    MF_THINGS_SECRET: "test-secret"
+
 adapter:
   http:
-    name: "http-adapter"
+    name: "http-adapteri"
+    port: 8185
     env:
       MF_THINGS_URL: "things:8183"
       MF_NATS_URL: "nats://nats:4222"
       MF_HTTP_ADAPTER_PORT: "8185"
+  coap:
+    name: "coap-adapteri"
+    port: 8187
+    env:
+      MF_THINGS_URL: "things:8183"
+      MF_NATS_URL: "nats://nats:4222"
+      MF_COAP_ADAPTER_PORT: "8187"
   ws:
     name: "ws-adapter"
     env:

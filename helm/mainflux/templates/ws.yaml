@@ -16,7 +16,7 @@ spec:
         image: {{ .Values.wsAdapterImage }}
         imagePullPolicy: Always
         ports:
-        - containerPort: 8186
+        - containerPort: {{ .Values.adapter.ws.port }}
         env:
         {{- range $key, $value := .Values.adapter.ws.env }}
             - name: {{ $key }}
@@ -35,5 +35,5 @@ spec:
   selector:
     component: {{ .Values.adapter.ws.name }}
   ports:
-  - port: 8186
+  - port: {{ .Values.adapter.ws.port }}
   # type: LoadBalancer
