@@ -1,0 +1,14 @@
+# Default values for mainflux Coap adapter
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+coapAdapterImage: "mainflux/coap:latest"
+
+adapterName: "coap-adapter"
+adapterPort: 5683
+adapterEnv:
+ MF_COAP_ADAPTER_LOG_LEVEL: "debug"
+ MF_THINGS_URL: "things:8183"
+ MF_NATS_URL: "nats://nats-cluster.nats-io:4222"
+ MF_COAP_ADAPTER_PORT: "5683"
+

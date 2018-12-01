@@ -1,0 +1,8 @@
+dependencies:
+ - name: cassandra
+   condition: cassandra.enabled
+ - name: influxdb
+   condition: influxdb.enabled
+ - name: mongodb
+   condition: mongodb.enabled
+

@@ -1,0 +1,10 @@
+dependencies:
+ - name: coap
+   condition: coap.enabled
+ - name: http
+   condition: http.enabled
+ - name: mqtt
+   condition: mqtt.enabled
+ - name: ws
+   condition: ws.enabled 
+

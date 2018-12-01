@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.adapterName }}
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    component: {{ .Values.adapterName }}
+spec:
+  ports:
+  - port: {{ .Values.adapterPort }}
+  selector:
+    component: {{ .Values.adapterName }}
+  type: {{ .Values.global.serviceType}}
+---
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ .Values.adapterName }}
+  namespace: {{ .Values.global.namespace }}
+spec:
+  scaleTargetRef:
+    apiVersion: extensions/v1beta1
+    kind: Deployment
+    name: {{ .Values.adapterName }}
+  minReplicas: {{ .Values.global.hpa.min }}
+  maxReplicas: {{ .Values.global.hpa.max }}
+  metrics:
+  - type: Resource
+    resource:
+      name: {{ .Values.global.hpa.metric }}
+      targetAverageUtilization: {{ .Values.global.hpa.utilization }}
+---
+apiVersion: apps/v1beta1 
+kind: Deployment 
+metadata:
+  namespace: {{ .Values.global.namespace }}
+  name: {{ .Values.adapterName }}
+  labels:
+    component: {{ .Values.adapterName }} 
+spec:
+  template:
+    metadata:
+      labels:
+        component: {{ .Values.adapterName }}
+    spec:
+      containers:
+      - name: {{ .Values.adapterName }}
+        image: {{ .Values.coapAdapterImage }}
+        imagePullPolicy: {{ .Values.global.pullPolicy }}
+        ports:
+        - containerPort: {{ .Values.adapterPort }}
+        env:
+        {{- range $key, $value := .Values.adapterEnv }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+        {{- end }}

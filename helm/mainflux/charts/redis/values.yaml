@@ -1,0 +1,14 @@
+# Default values for mainflux Redis
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+redisImage: "k8s.gcr.io/redis:e2e"
+
+
+redis:
+  name: "mainflux-redis"
+  port: 6379
+
+resource:
+  cpu: "100m"
+  memory: "100Mi"

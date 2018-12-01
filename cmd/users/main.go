@@ -130,7 +130,7 @@ func loadConfig() config {
 func connectToDB(dbConfig postgres.Config, logger logger.Logger) *sql.DB {
 	db, err := postgres.Connect(dbConfig)
 	if err != nil {
-		logger.Error(fmt.Sprintf("Failed to connect to postgres: %s", err))
+		logger.Error(fmt.Sprintf("vi vFailed to connect to postgres: %s", err))
 		os.Exit(1)
 	}
 	return db

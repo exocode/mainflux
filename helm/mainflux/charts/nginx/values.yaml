@@ -1,0 +1,34 @@
+# Default values for mainflux.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+
+# images
+nginxImage: nginx:1.13-alpine
+
+# volumes
+volumes:
+  secretVolume: "secret-volume"
+  secretVolumeName: "mainflux-secret"
+  configMapVolume: "configmap-volume"
+  nginxCert:
+    mountPath: "/etc/ssl/certs/mainflux-server.crt"
+    subPath: "mainflux-server.crt"
+  nginxKey:
+    mountPath: "/etc/ssl/private/mainflux-server.key"
+    subPath: "mainflux-server.key"
+  nginxDhParam:
+    mountPath: "/etc/ssl/certs/dhparam.pem"
+    subPath: "dhparam.pem"
+  nginxConf:
+    mountPath: "/etc/nginx/nginx.conf"
+    subPath: "nginx.conf"
+
+nginx:
+  fullname: "mainflux-nginx"
+  name: "nginx"
+  ports:
+    http: 80
+    https: 443
+    mqtt: 8883
+

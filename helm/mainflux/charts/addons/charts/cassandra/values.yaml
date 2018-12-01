@@ -1,0 +1,45 @@
+# Default values for cassandra in mainflux.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+
+# images
+cassandraImage: "cassandra:3.11.3"
+cassandraReaderImage: "mainflux/cassandra-reader:latest"
+cassandraWriterImage: "mainflux/cassandra-writer:latest"
+
+# volumes
+volumes:
+  accessMode: ReadWriteOnce
+  size: 1Gi
+  cassandra:
+    claimName: "mainflux-cassandra-data-claim"
+    path: "/tmp/data/cassandra-0"
+    name: "mainflux-cassandra-data"
+    diskName: "mainflux-cassandra-data-disk"
+    mountPath: "/var/lib/cassandra"
+
+cassandra:
+  name: "mainflux-cassandra"
+  port: 9042
+
+reader:
+  name: "cassandra-reader"
+  port: 8093
+  env:
+      MF_CASSANDRA_READER_LOG_LEVEL: "debug"
+      MF_CASSANDRA_READER_PORT: "8903"
+      MF_CASSANDRA_READER_DB_CLUSTER: "mainflux-cassandra"
+      MF_CASSANDRA_READER_DB_KEYSPACE: "mainflux"
+
+writer:
+  name: "cassandra-writer"
+  port: 8092
+  env:
+      MF_CASSANDRA_WRITER_LOG_LEVEL: "debug"
+      MF_NATS_URL: "nats://nats-cluster.nats-io:4222"
+      MF_CASSANDRA_WRITER_PORT: "8902"
+      MF_CASSANDRA_WRITER_DB_CLUSTER: "mainflux-cassandra"
+      MF_CASSANDRA_WRITER_DB_KEYSPACE: "mainflux"
+
+

@@ -1,0 +1,13 @@
+# Default values for mainflux WebSocket adapter
+# Declare variables to be passed into your templates.
+
+wsAdapterImage: "mainflux/ws:latest"
+
+adapterName: "ws-adapter"
+adapterPort: 8186
+adapterEnv:
+  MF_THINGS_URL: "things:8183"
+  MF_NATS_URL: "nats://nats-cluster.nats-io:4222"
+  MF_WS_ADAPTER_PORT: "8186"
+  MF_WS_ADAPTER_LOG_LEVEL: "debug"
+

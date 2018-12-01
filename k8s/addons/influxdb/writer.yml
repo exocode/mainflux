@@ -19,7 +19,7 @@ spec:
         - containerPort: 8900
         env:
           - name: MF_NATS_URL
-            value: "nats://nats:4222"
+            value: "nats://nats-cluster-metrics.nats-io:4222"
           - name: MF_INFLUX_WRITER_PORT
             value: "8900"
           - name: MF_INFLUX_WRITER_BATCH_SIZE
