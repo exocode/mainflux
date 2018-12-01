@@ -1,0 +1,61 @@
+# Default values for mainflux.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+
+# images
+usersImage: mainflux/users:latest
+usersPostgresImage: postgres:10.2-alpine
+thingsPostgresImage: postgres:10.2-alpine
+nginxImage: nginx:1.13-alpine
+natsImage: nats:1.1.0
+httpAdapterImage: mainflux/http:latest
+wsAdapterImage: mainflux/ws:latest
+mqttAdapterImage: mainflux/mqtt:latest
+
+nginx:
+  fullname: "mainflux-nginx"
+  name: "nginx"
+  ports:
+    http: 80
+    https: 443
+    mqtt: 8883
+
+nats:
+  name: "nats"
+  ports:
+    client: 4222
+    cluster: 6222
+    monitor: 8222
+
+adapter:
+  http:
+    name: "http-adapter"
+    env:
+      MF_THINGS_URL: "things:8183"
+      MF_NATS_URL: "nats://nats:4222"
+      MF_HTTP_ADAPTER_PORT: "8185"
+  ws:
+    name: "ws-adapter"
+    env:
+      MF_THINGS_URL: "things:8183"
+      MF_NATS_URL: "nats://nats:4222"
+      MF_WS_ADAPTER_PORT: "8186"
+  mqtt:
+    name: "mqtt-adapter"
+    env:
+      MF_THINGS_URL: "things:8183"
+      MF_NATS_URL: "nats://nats:4222"
+      MF_MQTT_REDIS_HOST: "redis"
+      MF_MQTT_ADAPTER_PORT: "1883"
+      MF_MQTT_WS_PORT: "8880"
+
+defaultResources: 
+  requests:
+    cpu: 0
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

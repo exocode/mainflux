@@ -1,0 +1,38 @@
+apiVersion: apps/v1beta1 
+kind: Deployment 
+metadata:
+  name: {{ .Values.adapter.http.name }}
+  labels:
+    component: {{ .Values.adapter.http.name }}
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: {{ .Values.adapter.http.name }}
+    spec:
+      containers:
+      - name: mainflux-http
+        image: {{ .Values.httpAdapterImage }}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8185
+        env:
+        {{- range $key, $value := .Values.adapter.http.env }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end }}
+---
+apiVersion: v1 
+kind: Service 
+metadata:
+  name: {{ .Values.adapter.http.name }}
+  labels:
+    component: {{ .Values.adapter.http.name }} 
+spec:
+  selector:
+    component: {{ .Values.adapter.http.name }}
+  ports:
+  - port: 8185
+  # type: LoadBalancer
+

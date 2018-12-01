@@ -1,0 +1,53 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: things
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: things
+  template:
+    metadata:
+      labels:
+        component: things
+    spec:
+      containers:
+      - name: things
+        image: mainflux/things:latest
+        ports:
+        - containerPort: 8182
+          name: things-http
+        - containerPort: 8183
+          name: things-grpc
+        resources:
+{{ toYaml .Values.defaultResources | indent 10 }}
+        env:
+        - name: MF_THINGS_DB_HOST
+          value: "mainflux-things-postgres"
+        - name: MF_THINGS_DB_PORT
+          value: "5432"
+        - name: MF_THINGS_HTTP_PORT
+          value: "8182"
+        - name: MF_THINGS_GRPC_PORT
+          value: "8183"
+        - name: MF_USERS_URL
+          value: "users:8181"
+        - name: MF_THINGS_SECRET
+          value: "test-secret"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: things
+  labels:
+    component: things
+spec:
+  ports:
+  - port: 8182
+    name: http
+  - port: 8183
+    name: grpc
+  selector:
+    component: things
+  # type: LoadBalancer

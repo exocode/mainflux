@@ -1,0 +1,47 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: influxdb-reader
+  labels:
+    component: influxdb-reader
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: influxdb-reader
+    spec:
+      containers:
+      - name: mainflux-influxdb-reader
+        image: mainflux/influxdb-reader:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8905
+        env:
+          - name: MF_THINGS_URL
+            value: "things:8183"
+          - name: MF_INFLUX_READER_PORT
+            value: "8905"
+          - name: MF_INFLUX_READER_DB_NAME
+            value: "mainflux"
+          - name: MF_INFLUX_READER_DB_HOST
+            value: "mainflux-influxdb"
+          - name: MF_INFLUX_READER_DB_PORT
+            value: "8086"
+          - name: MF_INFLUX_READER_DB_USER
+            value: "mainflux"
+          - name: MF_INFLUX_READER_DB_PASS
+            value: "mainflux"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: influxdb-reader
+  labels:
+    component: influxdb-reader
+spec:
+  selector:
+    component: influxdb-reader
+  ports:
+  - port: 8905
+  type: LoadBalancer

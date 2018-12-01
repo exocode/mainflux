@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "nginx.configMap.name" }}
+data:
+{{ (.Files.Glob "static/nginx/nginx.conf").AsConfig | indent 2 }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "nats.configMap.name" }}
+data:
+{{ (.Files.Glob "static/nats/nats.conf").AsConfig | indent 2 }}
