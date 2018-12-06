@@ -27,12 +27,12 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: mainflux-users-postgres
+  name: {{ .Values.users-db.name }}
   labels:
-    name: mainflux-users-postgres
+    name: {{ .Values.users-db.name }}
 spec:
   containers:
-    - name: mainflux-users-postgres
+    - name: {{ .Values.users-db.name }}
       image: {{ .Values.usersPostgresImage }}
       env:
         - name: POSTGRES_USER
@@ -58,11 +58,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mainflux-users-postgres
+  name: {{ .Values.users-db.name }}
   labels:
-    name: mainflux-users-postgres
+    name: {{ .Values.users-db.name }}
 spec:
   ports:
-    - port: 5432
+    - port: {{ .Values.users-db.container_ports.db-port }}
   selector:
-    name: mainflux-users-postgres
+    name: {{ .Values.users-db.name }}

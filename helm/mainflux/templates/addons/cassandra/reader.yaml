@@ -1,0 +1,43 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: cassandra-reader
+  labels:
+    component: cassandra-reader
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: cassandra-reader
+    spec:
+      containers:
+      - name: mainflux-cassandra-reader
+        image: juanman/cassandra-reader:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8903
+        env:
+          - name: MF_CASSANDRA_READER_LOG_LEVEL
+            value: "debug"
+          - name: MF_THINGS_URL
+            value: "things:8183"
+          - name: MF_CASSANDRA_READER_PORT
+            value: "8903"
+          - name: MF_CASSANDRA_READER_DB_CLUSTER
+            value: "mainflux-cassandra"
+          - name: MF_CASSANDRA_READER_DB_KEYSPACE
+            value: "mainflux"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cassandra-reader
+  labels:
+    component: cassandra-reader
+spec:
+  selector:
+    component: cassandra-reader
+  ports:
+  - port: 8903
+  type: LoadBalancer
