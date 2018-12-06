@@ -11,7 +11,7 @@ thingsImage: juanman/things:original
 usersPostgresImage: postgres:10.2-alpine
 thingsPostgresImage: postgres:10.2-alpine
 nginxImage: nginx:1.13-alpine
-natsImage: nats:1.1.0
+natsImage: nats:1.3.0
 #httpAdapterImage: mainflux/http:latest
 httpAdapterImage: juanman/http:original
 #wsAdapterImage: mainflux/ws:latest
@@ -22,6 +22,8 @@ mqttAdapterImage: juanman/mqtt:original
 coapAdapterImage: juanman/coap:original
 #normalizerImage: mainflux/normalizer:latest
 normalizerImage: juanman/normalizer:original
+redisThingsImage: redis:5.0-alpine
+redisImage: redis:4.0.9-alpine
 
 nginx:
   fullname: "mainflux-nginx"
@@ -48,6 +50,16 @@ normalizer:
   env:
       MF_NATS_URL: "nats://nats:4222"
       MF_NORMALIZER_PORT: "8184"
+      MF_NORMALIZER_LOG_LEVEL: "debug"
+
+users-db:
+  name: "mainflux-users-postgres"
+  container_ports:
+    db-port: "5432"
+  env:
+    POSTGRESS_USER: "mainflux"
+    POSTGRESS_PASSWORD: "mainflux"
+    POSTGRESS_DB: "users"
 
 users:
   name: "users"
@@ -66,6 +78,24 @@ users:
     MF_USERS_HTTP_PORT: "8180"
     MF_USERS_GRPC_PORT: "8181"
     MF_USERS_SECRET: "test-secret"
+    MF_USERS_LOG_LEVEL: "debug"
+    MF_USERS_DB_PORT: "5432"
+    MF_USERS_DB_USER: "mainflux"
+    MF_USERS_DB_PASS: "mainflux"
+    MF_USERS_DB: "users"
+     
+
+things-db:
+  name: "mainflux-things-postgres"
+  container_ports:
+    db-port: "5432"
+  env:
+    POSTGRESS_USER: "mainflux"
+    POSTGRESS_PASSWORD: "mainflux"
+    POSTGRESS_DB: "things"
+
+things-redis:
+  name: "mainflux-things-redis"
 
 things:
   name: "things"
@@ -86,6 +116,13 @@ things:
     MF_THINGS_GRPC_PORT: "8183"
     MF_USERS_URL: "users:8181"
     MF_THINGS_SECRET: "test-secret"
+    MF_THINGS_LOG_LEVEL: "debug"
+    MF_THINGS_DB_USER: "mainflux"
+    MF_THINGS_DB_PASS: "mainflux"
+    MF_THINGS_CACHE_URL: "things-redis:6379"
+
+redis:
+  name: "mainflux-redis"
 
 adapter:
   http:
@@ -95,27 +132,34 @@ adapter:
       MF_THINGS_URL: "things:8183"
       MF_NATS_URL: "nats://nats:4222"
       MF_HTTP_ADAPTER_PORT: "8185"
+      MF_HTTP_ADAPTER_LOG_LEVEL: "debug"
   coap:
-    name: "coap-adapteri"
-    port: 8187
+    name: "coap-adapter"
+    port: 5683
     env:
+      MF_COAP_ADAPTER_LOG_LEVEL: "debug"
       MF_THINGS_URL: "things:8183"
       MF_NATS_URL: "nats://nats:4222"
-      MF_COAP_ADAPTER_PORT: "8187"
+      MF_COAP_ADAPTER_PORT: "5683"
   ws:
     name: "ws-adapter"
+    port: 8186
     env:
       MF_THINGS_URL: "things:8183"
       MF_NATS_URL: "nats://nats:4222"
       MF_WS_ADAPTER_PORT: "8186"
+      MF_WS_ADAPTER_LOG_LEVEL: "debug"
   mqtt:
     name: "mqtt-adapter"
+    port: 1883
+    wsport: 8880
     env:
+      MF_MQTT_ADAPTER_LOG_LEVEL: "debug"
       MF_THINGS_URL: "things:8183"
       MF_NATS_URL: "nats://nats:4222"
-      MF_MQTT_REDIS_HOST: "redis"
+      MF_MQTT_ADAPTER_REDIS_HOST: "redis"
       MF_MQTT_ADAPTER_PORT: "1883"
-      MF_MQTT_WS_PORT: "8880"
+      MF_MQTT_ADAPTER_WS_PORT: "8880"
 
 defaultResources: 
   requests:
