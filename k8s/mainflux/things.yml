@@ -47,7 +47,7 @@ spec:
     apiVersion: extensions/v1beta1
     kind: Deployment
     name: things
-  minReplicas: 3
+  minReplicas: 1
   maxReplicas: 10
   metrics:
   - type: Resource
@@ -71,8 +71,8 @@ spec:
     spec:
       containers:
       - name: things
-#        image: mainflux/things:latest
-        image: juanman/things:original
+        image: mainflux/things:latest
+#        image: juanman/things:original
         ports:
         - containerPort: 8182
           name: things-http

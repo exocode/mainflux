@@ -45,7 +45,7 @@ spec:
     apiVersion: extensions/v1beta1
     kind: Deployment
     name: ws-adapter
-  minReplicas: 3
+  minReplicas: 1
   maxReplicas: 10
   metrics:
   - type: Resource
@@ -68,15 +68,15 @@ spec:
     spec:
       containers:
       - name: mainflux-ws
-#        image: mainflux/ws:latest
-        image: juanman/ws:original
+        image: mainflux/ws:latest
+#        image: juanman/ws:original
         ports:
         - containerPort: 8186
         env:
         - name: MF_THINGS_URL
           value: "things:8183"
         - name: MF_NATS_URL
-          value: "nats://nats-cluster.nats-io:4222"
+          value: "nats://nats-cluster-metrics.nats-io:4222"
         - name:  MF_WS_ADAPTER_PORT
           value: "8186"
         livenessProbe:

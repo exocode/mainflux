@@ -22,7 +22,7 @@ spec:
     apiVersion: extensions/v1beta1
     kind: Deployment
     name: normalizer
-  minReplicas: 3
+  minReplicas: 1
   maxReplicas: 10
   metrics:
   - type: Resource
@@ -44,12 +44,12 @@ spec:
     spec:
       containers:
       - name: mainflux-normalizer
-#        image: mainflux/normalizer:latest
-        image: juanman/normalizer:original
+        image: mainflux/normalizer:latest
+#        image: juanman/normalizer:original
         imagePullPolicy: Always
         env:
         - name: MF_NATS_URL
-          value: "nats://nats-cluster.nats-io:4222"
+          value: "nats://nats-cluster-metrics.nats-io:4222"
         - name: MF_NORMALIZER_PORT
           value: "8184"
         livenessProbe:

@@ -43,7 +43,7 @@ spec:
     apiVersion: extensions/v1beta1
     kind: Deployment
     name: mqtt-adapter
-  minReplicas: 3
+  minReplicas: 1
   maxReplicas: 10
   metrics:
   - type: Resource
@@ -66,8 +66,8 @@ spec:
     spec:
       containers:
       - name: mainflux-mqtt
-#        image: mainflux/mqtt:latest
-        image: juanman/mqtt:original
+        image: mainflux/mqtt:latest
+#        image: juanman/mqtt:original
         imagePullPolicy: Always
         ports:
         - containerPort: 1883
@@ -78,10 +78,10 @@ spec:
         - name: MF_THINGS_URL
           value: "things:8183"
         - name: MF_NATS_URL
-          value: "nats://nats-cluster.nats-io:4222"
-        - name: MF_MQTT_REDIS_HOST
+          value: "nats://nats-cluster-metrics.nats-io:4222"
+        - name: MF_MQTT_ADAPTER_REDIS_HOST
           value: "redis-master.redis"
         - name: MF_MQTT_REDIS_PORT
           value: "6379"
-        - name: MF_MQTT_REDIS_PASS
-          value: "piIUITrNMc"
+#        - name: MF_MQTT_REDIS_PASS
+#          value: "piIUITrNMc"

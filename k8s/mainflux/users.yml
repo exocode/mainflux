@@ -47,7 +47,7 @@ spec:
     apiVersion: extensions/v1beta1
     kind: Deployment
     name: users
-  minReplicas: 3
+  minReplicas: 1
   maxReplicas: 10
   metrics:
   - type: Resource
@@ -71,8 +71,8 @@ spec:
     spec:
       containers:
       - name: users
-#        image: mainflux/users:latest
-        image: juanman/users:original
+        image: mainflux/users:latest
+#        image: juanman/users:original
         ports:
         - containerPort: 8180
           name: users-http

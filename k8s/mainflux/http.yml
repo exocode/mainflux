@@ -45,7 +45,7 @@ spec:
     apiVersion: extensions/v1beta1
     kind: Deployment
     name: http-adapter
-  minReplicas: 3
+  minReplicas: 1
   maxReplicas: 10
   metrics:
   - type: Resource
@@ -68,15 +68,15 @@ spec:
     spec:
       containers:
       - name: mainflux-http
-#        image: mainflux/http:latest
-        image: juanman/http:original
+        image: mainflux/http:latest
+#        image: juanman/http:original
         ports:
         - containerPort: 8185
         env:
         - name: MF_THINGS_URL
           value: "things:8183"
         - name: MF_NATS_URL
-          value: "nats://nats-cluster.nats-io:4222"
+          value: "nats://nats-cluster-metrics.nats-io:4222"
         - name:  MF_HTTP_ADAPTER_PORT
           value: "8185"
         livenessProbe:
