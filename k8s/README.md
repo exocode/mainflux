@@ -12,11 +12,11 @@ kubectl create namespace nats-io
 
 kubectl apply -f k8s/mainflux/service-account.yaml
 
-kubectl -n nats-io apply -f k8s/mainflux/role.yaml
+kubectl -n nats-io apply -f k8s/nats/role.yaml
 
-kubectl -n nats-io apply -f k8s/mainflux/deployment.yaml
+kubectl -n nats-io apply -f k8s/nats/deployment.yaml
 
-kubectl -n nats-io apply -f k8s/mainflux/nats-cluster-metrics.yaml
+kubectl -n nats-io apply -f k8s/nats/nats-cluster-metrics.yaml
 ```
 
 ### 2. Setup gRPC services Istio sidecar
