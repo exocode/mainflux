@@ -8,7 +8,7 @@ Scripts to deploy Mainflux on Kubernetes (https://kubernetes.io). Work in progre
 - To setup NATS cluster on k8s we recommend using [NATS operator](https://github.com/nats-io/nats-operator). NATS cluster should be deployed on namespace `nats-io` under the name `nats-cluster-metrics`.
 
 ```
-kubectl create namespace k8s/mainflux/nats-io
+kubectl create namespace nats-io
 
 kubectl apply -f k8s/mainflux/service-account.yaml
 
