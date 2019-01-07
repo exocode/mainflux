@@ -39,7 +39,7 @@ kubectl create namespace redis
 
 kubectl apply -n redis -f k8s/redis/redis-master-service.yaml
 
-kubectl apply -n redis -f redis-master-deployment.yaml
+kubectl apply -n redis -f k8s/redis/redis-master-deployment.yaml
 ```
 
 <span style="color:red">Slave redis hosts not created yet </span>
