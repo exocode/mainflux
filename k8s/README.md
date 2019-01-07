@@ -10,7 +10,7 @@ Scripts to deploy Mainflux on Kubernetes (https://kubernetes.io). Work in progre
 ```
 kubectl create namespace nats-io
 
-kubectl apply -f k8s/mainflux/service-account.yaml
+kubectl apply -f k8s/nats/service-account.yaml
 
 kubectl -n nats-io apply -f k8s/nats/role.yaml
 
