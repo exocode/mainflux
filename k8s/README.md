@@ -107,14 +107,14 @@ kubectl create -f k8s/mainflux/dashflux.yml
 - Deploy Grafana
 
 ```
-kubectl create -f k8s/addons/grafana.yml
+kubectl create -f k8s/addons/influxdb/grafana.yml
 ```
 - Deploy InfluxDb
 
 ```
-kubectl create -f k8s/addons/influxdb.yml
+kubectl create -f k8s/addons/influxdb/influxdb.yml
 
-kubectl create -f k8s/addons/writer.yml
+kubectl create -f k8s/addons/influxdb/writer.yml
 ```
 ### 10. Create Nginx Reverse Proxy for Mainflux HTTP Services (mainly port 80 and 443)
 
