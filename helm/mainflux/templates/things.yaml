@@ -1,9 +1,44 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.things.name }}
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    component: {{ .Values.things.name }}
+spec:
+  ports:
+  - port: {{ .Values.things.ports.httpPort }}
+    name: {{ .Values.things.ports.httpName }}
+  - port: {{ .Values.things.ports.grpcPort }}
+    name: {{ .Values.things.ports.grpcName }}
+  selector:
+    component: {{ .Values.things.name }}
+  type: {{ .Values.global.serviceType}}
+---
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ .Values.things.name }}
+  namespace: {{ .Values.global.namespace }}
+spec:
+  scaleTargetRef:
+    apiVersion: extensions/v1beta1
+    kind: Deployment
+    name: {{ .Values.things.name }}
+  minReplicas: {{ .Values.global.hpa.min }}
+  maxReplicas: {{ .Values.global.hpa.max }}
+  metrics:
+  - type: Resource
+    resource:
+      name: {{ .Values.global.hpa.metric }}
+      targetAverageUtilization: {{ .Values.global.hpa.utilization }}
+---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: {{ .Values.things.name }}
+  namespace: {{ .Values.global.namespace }}
 spec:
-  replicas: 1
   selector:
     matchLabels:
       component: {{ .Values.things.name }}
@@ -15,43 +50,21 @@ spec:
       containers:
       - name: {{ .Values.things.name }}
         image: {{ .Values.thingsImage }}
+        imagePullPolicy: {{ .Values.global.pullPolicy }}
         ports:
-        - containerPort: {{ .Values.things.container_ports.http-port }}
-          name: {{ .Values.things.container_ports.http-name }}
-        - containerPort: {{ .Values.things.container_ports.grpc-port }}
-          name: {{ .Values.things.container_ports.grpc-name }}
-        resources:
-{{ toYaml .Values.defaultResources | indent 10 }}
+        - containerPort: {{ .Values.things.ports.httpPort }}
+          name: {{ .Values.things.ports.httpName }}
+        - containerPort: {{ .Values.things.ports.grpcPort }}
+          name: {{ .Values.things.ports.grpcName }}
         env:
-        {{- range $key, $value := .Values.adapter.http.env }}
+        {{- range $key, $value := .Values.things.env }}
         - name: {{ $key }}
           value: {{ $value | quote }}
         {{- end }}
-#        - name: MF_THINGS_DB_HOST
-#          value: "mainflux-things-postgres"
-#        - name: MF_THINGS_DB_PORT
-#          value: "5432"
-#        - name: MF_THINGS_HTTP_PORT
-#          value: "8182"
-#        - name: MF_THINGS_GRPC_PORT
-#          value: "8183"
-#        - name: MF_USERS_URL
-#          value: "users:8181"
-#        - name: MF_THINGS_SECRET
-#          value: "test-secret"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ .Values.things.name }}
-  labels:
-    component: {{ .Values.things.name }}
-spec:
-  ports:
-  - port: {{ .Values.things.service_ports.http-port }}
-    name: {{ .Values.things.service_ports.http-name }}
-  - port: {{ .Values.things.service_ports.grpc-port }}
-    name: {{ .Values.things.service_ports.grpc-name }}
-  selector:
-    component: {{ .Values.things.name }}
-  # type: LoadBalancer
+        livenessProbe:
+          httpGet:
+            path: /version
+            port: {{ .Values.things.ports.httpPort }}
+          initialDelaySeconds: {{ .Values.global.probe.initialDelay }}
+          periodSeconds: {{ .Values.global.probe.period }}
+

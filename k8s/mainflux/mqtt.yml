@@ -67,7 +67,6 @@ spec:
       containers:
       - name: mainflux-mqtt
         image: mainflux/mqtt:latest
-#        image: juanman/mqtt:original
         imagePullPolicy: Always
         ports:
         - containerPort: 1883
@@ -83,5 +82,3 @@ spec:
           value: "redis-master.redis"
         - name: MF_MQTT_REDIS_PORT
           value: "6379"
-#        - name: MF_MQTT_REDIS_PASS
-#          value: "piIUITrNMc"

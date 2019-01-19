@@ -1,0 +1,18 @@
+# Default values for mainflux MQTT adapter
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+mqttAdapterImage: "mainflux/mqtt:latest"
+
+adapterName: "mqtt-adapter"
+adapterPorts:
+  mqtt: 1883
+  ws: 8880
+adapterEnv:
+  MF_MQTT_ADAPTER_LOG_LEVEL: "debug"
+  MF_THINGS_URL: "things:8183"
+  MF_NATS_URL: "nats://nats:4222"
+  MF_MQTT_ADAPTER_REDIS_HOST: "redis"
+  MF_MQTT_ADAPTER_PORT: "1883"
+  MF_MQTT_ADAPTER_WS_PORT: "8880"
+

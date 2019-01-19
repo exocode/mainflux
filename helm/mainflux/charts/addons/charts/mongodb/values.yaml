@@ -1,0 +1,47 @@
+# Default values for mongodb in mainflux.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+
+# images
+mongoImage: "monho:3.6-jessie"
+mongoReaderImage: "mainflux/mongodb-reader:latest"
+mongoWriterImage: "mainflux/mongodb-writer:latest"
+
+# volumes
+volumes:
+  accessMode: ReadWriteOnce
+  size: 1Gi
+  mongodb:
+    claimName: "mainflux-mongodb-data-claim"
+    path: "/tmp/data/mongodb-0"
+    name: "mainflux-mongodb-data"
+    diskName: "mainflux-mongo-data-disk"
+    mountPath: "/var/lib/mongodb"
+
+mongodb:
+  name: "mainflux-mongodb"
+  port: 27017
+  MONGO_INITDB_DATABASE: "mainflux"
+
+reader:
+  name: "mongodb-reader"
+  port: 8904
+  env:
+      MF_MONGO_READER_LOG_LEVEL: "debug"
+      MF_THINGS_URL: "things:8183"
+      MF_MONGO_READER_PORT: "8904"
+      MF_MONGO_READER_DB_NAME: "mainflux"
+      MF_MONGO_READER_DB_HOST: "mainflux-mongodb"
+      MF_MONGO_READER_DB_PORT: "27017"
+
+writer:
+  name: "mongodb-writer"
+  port: 8901
+  env:
+      MF_MONGO_WRITER_LOG_LEVEL: "debug"
+      MF_NATS_URL: "nats://nats:4222"
+      MF_MONGO_WRITER_PORT: "8901"
+      MF_MONGO_WRITER_DB_NAME: "mainflux"
+      MF_MONGO_WRITER_DB_HOST: "mainflux-mongodb"
+      MF_MONGO_WRITER_DB_PORT: "27017"

@@ -1,0 +1,6 @@
+dependencies:
+ - name: nginx
+   condition: nginx.enabled
+ - name: redis
+   condition: redis.enabled 
+

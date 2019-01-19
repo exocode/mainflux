@@ -1,0 +1,56 @@
+# Default values for cassandra in mainflux.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+
+# images
+influxdbImage: "influxdb:1.5.2-alpine"
+influxdbReaderImage: "mainflux/influxdb-reader:latest"
+influxdbWriterImage: "mainflux/influxdb-writer:latest"
+
+# volumes
+volumes:
+  accessMode: ReadWriteOnce
+  size: 1Gi
+  influxdb:
+    claimName: "mainflux-influxdb-data-claim"
+    path: "/tmp/data/influxdb-0"
+    name: "mainflux-influxdb-data"
+    diskName: "mainflux-influxdb-data-disk"
+    mountPath: "/var/lib/influxdb"
+
+influxdb:
+  name: "mainflux-influxdb"
+  port: 8086
+  INFLUXDB_DB: "mainflux"
+  INFLUXDB_ADMIN_USER: "mainflux"
+  INFLUXDB_ADMIN_PASSWORD: "mainflux"
+
+reader:
+  name: "influxdb-reader"
+  port: 8905
+  env:
+      MF_THINGS_URL: "things:8183"
+      MF_INFLUX_READER_PORT: "8905"
+      MF_INFLUX_READER_DB_NAME: "mainflux"
+      MF_INFLUX_READER_DB_HOST: "mainflux-influxdb"
+      MF_INFLUX_READER_DB_PORT: "8086"
+      MF_INFLUX_READER_DB_USER: "mainflux"
+      MF_INFLUX_READER_DB_PASS: "mainflux"
+
+writer:
+  name: "influxdb-writer"
+  port: 8900
+  env:
+      MF_NATS_URL: "nats://nats:4222"
+      MF_INFLUX_WRITER_PORT: "8900"
+      MF_INFLUX_WRITER_BATCH_SIZE: "5000"
+      MF_INFLUX_WRITER_BATCH_TIMEOUT: "5"
+      MF_INFLUX_WRITER_DB_NAME: "mainflux"
+      MF_INFLUX_WRITER_DB_HOST: "mainflux-influxdb"
+      MF_INFLUX_WRITER_DB_PORT: "8086"
+      MF_INFLUX_WRITER_DB_USER: "mainflux"
+      MF_INFLUX_WRITER_DB_PASS: "mainflux"
+
+
+

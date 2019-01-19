@@ -69,7 +69,6 @@ spec:
       containers:
       - name: mainflux-http
         image: mainflux/http:latest
-#        image: juanman/http:original
         ports:
         - containerPort: 8185
         env:

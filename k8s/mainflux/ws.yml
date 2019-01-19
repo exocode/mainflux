@@ -69,7 +69,6 @@ spec:
       containers:
       - name: mainflux-ws
         image: mainflux/ws:latest
-#        image: juanman/ws:original
         ports:
         - containerPort: 8186
         env:
@@ -79,9 +78,3 @@ spec:
           value: "nats://nats-cluster-metrics.nats-io:4222"
         - name:  MF_WS_ADAPTER_PORT
           value: "8186"
-        livenessProbe:
-          httpGet:
-            path: /version
-            port: 8186
-          initialDelaySeconds: 3
-          periodSeconds: 3

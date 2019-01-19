@@ -1,68 +1,72 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: mainflux-users-postgres-data-disk
+  name: {{ .Values.volumes.things.diskName }}
+  namespace: {{ .Values.global.namespace }}
   labels:
-    name: mainflux-users-postgres-data-disk
+    component: {{ .Values.volumes.things.diskName }}
 spec:
   capacity:
-    storage: 10Gi
+    storage: {{ .Values.volumes.size }}
   accessModes:
-    - ReadWriteOnce
+    - {{ .Values.volumes.accessMode }}
   hostPath:
-    path: /tmp/data/users-postgres-0
+    path: {{ .Values.volumes.users.path }}
   persistentVolumeReclaimPolicy: Recycle
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: mainflux-users-postgres-data-claim
+  name: {{ .Values.volumes.things.claimName }}
+  namespace: {{ .Values.global.namespace }}
 spec:
   accessModes:
-    - ReadWriteOnce
+    - {{ .Values.volumes.accessMode }}
   resources:
     requests:
-      storage: 10Gi
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: {{ .Values.users-db.name }}
-  labels:
-    name: {{ .Values.users-db.name }}
-spec:
-  containers:
-    - name: {{ .Values.users-db.name }}
-      image: {{ .Values.usersPostgresImage }}
-      env:
-        - name: POSTGRES_USER
-          value: "mainflux"
-        - name: POSTGRES_PASSWORD
-          value: "mainflux"
-        - name: POSTGRES_DB
-          value: "users"
-        - name: PGDATA
-          value: /var/lib/postgresql/data/mainflux-users-postgres-data
-      ports:
-        - containerPort: 5432
-      resources:
-{{ toYaml .Values.defaultResources | indent 8 }}
-      volumeMounts:
-        - mountPath: /var/lib/postgresql/data
-          name: mainflux-users-postgres-data
-  volumes:
-    - name: mainflux-users-postgres-data
-      persistentVolumeClaim:
-        claimName: mainflux-users-postgres-data-claim
+      storage: {{ .Values.volumes.things.size }}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.users-db.name }}
+  name: {{ .Values.usersDb.name }}
+  namespace: {{ .Values.global.namespace }}
   labels:
-    name: {{ .Values.users-db.name }}
+    component: {{ .Values.usersDb.name }}
 spec:
   ports:
-    - port: {{ .Values.users-db.container_ports.db-port }}
+    - port: {{ .Values.usersDb.port }}
   selector:
-    name: {{ .Values.users-db.name }}
+    component: {{ .Values.usersDb.name }}
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: {{ .Values.usersDb.name }}
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    component: {{ .Values.usersDb.name }}
+spec:
+  template:
+    metadata:
+      labels:
+        component: {{ .Values.usersDb.name }}
+    spec:
+      containers:
+      - name: {{ .Values.usersDb.name }}
+        image: {{ .Values.usersPostgresImage }}
+        imagePullPolicy: {{ .Values.global.pullPolicy }}
+        env:
+        {{- range $key, $value := .Values.usersDb.env }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end }}
+        ports:
+        - containerPort: {{ .Values.usersDb.port }}
+        volumeMounts:
+        - mountPath: {{ .Values.volumes.users.mountPath }}
+          name: {{ .Values.volumes.users.diskName }}
+      volumes:
+      - name: {{ .Values.volumes.users.diskName }}
+        persistentVolumeClaim:
+          claimName: {{ .Values.volumes.users.claimName }}

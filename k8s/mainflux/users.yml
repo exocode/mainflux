@@ -72,7 +72,6 @@ spec:
       containers:
       - name: users
         image: mainflux/users:latest
-#        image: juanman/users:original
         ports:
         - containerPort: 8180
           name: users-http

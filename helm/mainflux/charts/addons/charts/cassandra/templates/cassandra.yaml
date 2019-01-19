@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.volumes.cassandra.diskName }}
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    name: {{ .Values.volumes.cassandra.diskName }}
+spec:
+  capacity:
+    storage: {{ .Values.volumes.size }}
+  accessModes:
+    - {{ .Values.volumes.accessMode }}
+  hostPath:
+    path: {{ .Values.volumes.cassandra.diskName }}
+  persistentVolumeReclaimPolicy: Recycle
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ .Values.volumes.cassandra.claimName }}
+  namespace: {{ .Values.global.namespace }}
+spec:
+  accessModes:
+    - {{ .Values.volumes.accessMode }}
+  resources:
+    requests:
+      storage: {{ .Values.volumes.size }}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ .Values.cassandra.name }}
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    name: {{ .Values.cassandra.name }}
+spec:
+  containers:
+    - name: {{ .Values.cassandra.name }}
+      image: {{ .Values.cassandraImage }}
+      ports:
+        - containerPort: {{ .Values.cassandra.port }}
+      volumeMounts:
+        - mountPath: {{ .Values.volumes.cassandra.mountPath }}
+          name: {{ .Values.volumes.cassandra.name }}
+  volumes:
+    - name: {{ .Values.volumes.cassandra.name }}
+      persistentVolumeClaim:
+        claimName: {{ .Values.volumes.cassandra.mountPath }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.cassandra.name }}
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    name: {{ .Values.cassandra.name }}
+spec:
+  ports:
+    - port: {{ .Values.cassandra.port }}
+  selector:
+    name: {{ .Values.cassandra.name }}

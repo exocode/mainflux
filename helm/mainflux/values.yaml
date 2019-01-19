@@ -4,41 +4,30 @@
 
 
 # images
-#usersImage: mainflux/users:latest
-usersImage: juanman/users:original
-#thingsImage: mainflux/things:latest
-thingsImage: juanman/things:original
+usersImage: mainflux/users:latest
+thingsImage: mainflux/things:latest
 usersPostgresImage: postgres:10.2-alpine
 thingsPostgresImage: postgres:10.2-alpine
-nginxImage: nginx:1.13-alpine
-natsImage: nats:1.3.0
-#httpAdapterImage: mainflux/http:latest
-httpAdapterImage: juanman/http:original
-#wsAdapterImage: mainflux/ws:latest
-wsAdapterImage: juanman/ws:original
-#mqttAdapterImage: mainflux/mqtt:latest
-mqttAdapterImage: juanman/mqtt:original
-#coapAdapterImage: mainflux/coap:latest
-coapAdapterImage: juanman/coap:original
-#normalizerImage: mainflux/normalizer:latest
-normalizerImage: juanman/normalizer:original
-redisThingsImage: redis:5.0-alpine
-redisImage: redis:4.0.9-alpine
+normalizerImage: mainflux/normalizer:latest
+#redisThingsImage: redis:5.0-alpine
+#redisImage: redis:4.0.9-alpine
 
-nginx:
-  fullname: "mainflux-nginx"
-  name: "nginx"
-  ports:
-    http: 80
-    https: 443
-    mqtt: 8883
-
-nats:
-  name: "nats"
-  ports:
-    client: 4222
-    cluster: 6222
-    monitor: 8222
+# volumes
+volumes:
+  accessMode: ReadWriteOnce
+  size: 1Gi
+  things:
+    claimName: "mainflux-things-postgres-data-claim"
+    path: "/tmp/data/things-postgres-0" 
+    name: "mainflux-things-postgres-data"
+    diskName: "mainflux-things-postgres-data-disk"
+    mountPath: "/var/lib/postgresql/data"
+  users:
+    claimName: "mainflux-users-postgres-data-claim"
+    path: "/tmp/data/users-postgres-0"
+    name: "mainflux-users-postgres-data"
+    diskName: "mainflux-users-postgres-data-disk"
+    mountPath: "/var/lib/postgresql/data"
 
 dashflux:
   name: "dashflux"
@@ -52,10 +41,10 @@ normalizer:
       MF_NORMALIZER_PORT: "8184"
       MF_NORMALIZER_LOG_LEVEL: "debug"
 
-users-db:
+usersDb:
   name: "mainflux-users-postgres"
   container_ports:
-    db-port: "5432"
+    dbPort: "5432"
   env:
     POSTGRESS_USER: "mainflux"
     POSTGRESS_PASSWORD: "mainflux"
@@ -63,16 +52,11 @@ users-db:
 
 users:
   name: "users"
-  container_ports:
-    http-name: "users-http"
-    http-port: 8180
-    grpc-name: "users-grpc"
-    grpc-port: 8181
-  service_ports:
-    http-name: "http"
-    http-port: 8180
-    http-name: "grpc"
-    http-port: 8181
+  ports:
+    httpName: "users-http"
+    httpPort: 8180
+    grpcName: "users-grpc"
+    grpcPort: 8181
   env:
     MF_USERS_DB_HOST: "mainflux-users-postgres"
     MF_USERS_HTTP_PORT: "8180"
@@ -85,30 +69,27 @@ users:
     MF_USERS_DB: "users"
      
 
-things-db:
+thingsDb:
   name: "mainflux-things-postgres"
   container_ports:
-    db-port: "5432"
+    dbPort: "5432"
   env:
     POSTGRESS_USER: "mainflux"
     POSTGRESS_PASSWORD: "mainflux"
     POSTGRESS_DB: "things"
+    PGDATA: "/var/lib/postgresql/data/mainflux-things-postgres-data"
 
-things-redis:
-  name: "mainflux-things-redis"
+# TODO include redis for things
+#things-redis:
+#  name: "mainflux-things-redis"
 
 things:
   name: "things"
-  container_ports:
-    http-name: "things-http"
-    http-port: 8182
-    grpc-name: "things-grpc"
-    grpc-port: 8183
-  service_ports:
-    http-name: "http"
-    http-port: 8180
-    http-name: "grpc"
-    http-port: 8181
+  ports:
+    httpName: "things-http"
+    httpPort: 8182
+    grpcName: "things-grpc"
+    grpcPort: 8183
   env:
     MF_THINGS_DB_HOST: "mainflux-things-postgres"
     MF_THINGS_DB_PORT: "5432"
@@ -123,43 +104,17 @@ things:
 
 redis:
   name: "mainflux-redis"
+  enabled: true
 
-adapter:
-  http:
-    name: "http-adapteri"
-    port: 8185
-    env:
-      MF_THINGS_URL: "things:8183"
-      MF_NATS_URL: "nats://nats:4222"
-      MF_HTTP_ADAPTER_PORT: "8185"
-      MF_HTTP_ADAPTER_LOG_LEVEL: "debug"
-  coap:
-    name: "coap-adapter"
-    port: 5683
-    env:
-      MF_COAP_ADAPTER_LOG_LEVEL: "debug"
-      MF_THINGS_URL: "things:8183"
-      MF_NATS_URL: "nats://nats:4222"
-      MF_COAP_ADAPTER_PORT: "5683"
-  ws:
-    name: "ws-adapter"
-    port: 8186
-    env:
-      MF_THINGS_URL: "things:8183"
-      MF_NATS_URL: "nats://nats:4222"
-      MF_WS_ADAPTER_PORT: "8186"
-      MF_WS_ADAPTER_LOG_LEVEL: "debug"
-  mqtt:
-    name: "mqtt-adapter"
-    port: 1883
-    wsport: 8880
-    env:
-      MF_MQTT_ADAPTER_LOG_LEVEL: "debug"
-      MF_THINGS_URL: "things:8183"
-      MF_NATS_URL: "nats://nats:4222"
-      MF_MQTT_ADAPTER_REDIS_HOST: "redis"
-      MF_MQTT_ADAPTER_PORT: "1883"
-      MF_MQTT_ADAPTER_WS_PORT: "8880"
+addons:
+  enabled: true
+
+nginx:
+  enabled: true
+
+adapters:
+  enabled: true
+
 
 defaultResources: 
   requests:
@@ -170,3 +125,22 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+global:
+  pullPolicy: Always
+
+  replicas: 1
+
+  namespace: slice1
+
+  hpa:
+    min: 1
+    max: 10
+    metric: cpu
+    utilization: 80
+
+  probe:
+    initialDelay: 3
+    period: 3
+
+  serviceType: LoadBalancer
