@@ -136,9 +136,9 @@ kubectl create configmap mainflux-nginx-config --from-file=k8s/nginx/nginx.conf
 kubectl create -f k8s/nginx/nginx.yml
 ```
 
-### 11. Create MetalLB  L2 Load Balancer to provide external access to Mainflux Services
+### 11. Create MetalLB  L2 Load Balancer to provide external access to Mainflux Services (optional)
 
-For more information see [MetalLB L2 tutorial](https://metallb.universe.tf/tutorial/layer2/)
+When deploying in baremetal systems, an L2 Load Balancer can be installed. For more information see [MetalLB L2 tutorial](https://metallb.universe.tf/tutorial/layer2/)
 
 ```
 kubectl apply -f k8s/metallb/metallb.yaml
@@ -146,6 +146,7 @@ kubectl apply -f k8s/metallb/metallb.yaml
 kubectl apply -f k8s/metallb/layer2-config.yaml
 ```
 
-### 7. Configure Internet access
+### 12. Configure Internet access
 Configure NAT on your Firewall to forward ports 80 (HTTP) and 443 (HTTPS) to nginx ingress service
+
 
