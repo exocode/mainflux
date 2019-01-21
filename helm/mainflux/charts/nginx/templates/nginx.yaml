@@ -30,7 +30,7 @@ spec:
       - name: {{ .Values.volumes.secretVolume }}
         secret:
           secretName: {{ .Values.volumes.secretVolumeName }}
-      - name: {{ .Values.volumes.configMap }}
+      - name: {{ .Values.volumes.configMapVolume }}
         configMap:
           name: {{ template "nginx.configMap.name" }}
       containers:

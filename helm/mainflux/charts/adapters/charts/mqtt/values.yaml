@@ -11,8 +11,8 @@ adapterPorts:
 adapterEnv:
   MF_MQTT_ADAPTER_LOG_LEVEL: "debug"
   MF_THINGS_URL: "things:8183"
-  MF_NATS_URL: "nats://nats:4222"
-  MF_MQTT_ADAPTER_REDIS_HOST: "redis"
+  MF_NATS_URL: "nats://nats-cluster.nats-io:4222"
+  MF_MQTT_ADAPTER_REDIS_HOST: "mainflux-redis"
   MF_MQTT_ADAPTER_PORT: "1883"
   MF_MQTT_ADAPTER_WS_PORT: "8880"
 

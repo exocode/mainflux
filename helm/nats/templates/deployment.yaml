@@ -4,6 +4,9 @@ kind: CustomResourceDefinition
 metadata:
   name: {{ .Values.natsCluster.name }}
   namespace: {{ .Values.namespace }}
+  annotations:
+    "helm.sh/hook": "crd-install"
+    "helm.sh/hook-delete-policy": "before-hook-creation"
 spec:
   group: nats.io
   names:
@@ -21,6 +24,9 @@ kind: CustomResourceDefinition
 metadata:
   name: {{ .Values.natsServiceRole.name }}
   namespace: {{ .Values.namespace }}
+  annotations:
+    "helm.sh/hook": "crd-install"
+    "helm.sh/hook-delete-policy": "before-hook-creation"
 spec:
   group: nats.io
   names:

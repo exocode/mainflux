@@ -5,10 +5,3 @@ metadata:
   namespace: {{ .Values.global.namespace }}
 data:
 {{ (.Files.Glob "static/nginx.conf").AsConfig | indent 2 }}
----
-#apiVersion: v1
-#kind: ConfigMap
-#metadata:
-#  name: {{ template "nats.configMap.name" }}
-#data:
-#{{ (.Files.Glob "static/nats/nats.conf").AsConfig | indent 2 }}

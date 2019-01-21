@@ -27,7 +27,7 @@ spec:
         component: {{ .Values.dashflux.name }}
     spec:
       containers:
-      - name: {{ .Values.dashfluxImage }}
+      - name: {{ .Values.dashflux.name }}
         image: {{ .Values.dashfluxImage }}
         imagePullPolicy: {{ .Values.global.pullPolicy }}
         ports:

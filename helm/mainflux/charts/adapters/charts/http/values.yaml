@@ -5,10 +5,10 @@
 httpAdapterImage: "mainflux/http:latest"
 
 adapterName: "http-adapter"
-apaterPort: 8185
+adapterPort: 8185
 adapterEnv:
   MF_THINGS_URL: "things:8183"
-  MF_NATS_URL: "nats://nats:4222"
+  MF_NATS_URL: "nats://nats-cluster.nats-io:4222"
   MF_HTTP_ADAPTER_PORT: "8185"
   MF_HTTP_ADAPTER_LOG_LEVEL: "debug"
 

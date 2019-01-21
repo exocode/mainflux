@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: {{ .Values.volumes.things.diskName }}
+  name: {{ .Values.volumes.things.diskName }}-{{ .Release.Namespace }}
   namespace: {{ .Values.global.namespace }}
   labels:
     component: {{ .Values.volumes.things.diskName }}
@@ -11,8 +11,8 @@ spec:
   accessModes:
     - {{ .Values.volumes.accessMode }}
   hostPath:
-    path: {{ .Values.volumes.things.path }}
-  persistentVolumeReclaimPolicy: Recycle
+    path: {{ .Values.volumes.things.path }}-{{ .Release.Namespace }}
+  persistentVolumeReclaimPolicy: Delete
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -24,7 +24,7 @@ spec:
     - {{ .Values.volumes.accessMode }}
   resources:
     requests:
-      storage: {{ .Values.volumes.things.size }}
+      storage: {{ .Values.volumes.size }}
 ---
 apiVersion: v1
 kind: Service
@@ -65,8 +65,8 @@ spec:
         - containerPort: {{ .Values.thingsDb.port }}
         volumeMounts:
         - mountPath: {{ .Values.volumes.things.mountPath }}
-          name: {{ .Values.volumes.things.diskName }}
+          name: {{ .Values.volumes.things.name }}
       volumes:
-      - name: {{ .Values.volumes.things.diskName }}
+      - name: {{ .Values.volumes.things.name }}
         persistentVolumeClaim:
           claimName: {{ .Values.volumes.things.claimName }}

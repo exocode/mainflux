@@ -1,13 +1,13 @@
 apiVersion: "nats.io/v1alpha2"
 kind: "NatsCluster"
 metadata:
-  name: {{ .Values.natsMetrics.name }}
-  namespace: {{ .Values.metadata }}
+  name: "nats-cluster"
+  namespace: {{ .Values.namespace }}
 spec:
-  size: 3
+  size: 2
   version: "1.3.0"
-  serverImage: {{ .Values.nats.name }}
+  serverImage: "nats"
   pod:
-    enableMetrics: {{ .Values.natsMetrics.enabled }}
-    metricsImage: {{ .Values.natsMetricsImage }}
+    enableMetrics: true
+    metricsImage: "synadia/prometheus-nats-exporter"
     metricsImageTag: "0.1.0"

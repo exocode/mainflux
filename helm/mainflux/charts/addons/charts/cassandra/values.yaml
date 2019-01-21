@@ -37,7 +37,7 @@ writer:
   port: 8092
   env:
       MF_CASSANDRA_WRITER_LOG_LEVEL: "debug"
-      MF_NATS_URL: "nats://nats:4222"
+      MF_NATS_URL: "nats://nats-cluster.nats-io:4222"
       MF_CASSANDRA_WRITER_PORT: "8902"
       MF_CASSANDRA_WRITER_DB_CLUSTER: "mainflux-cassandra"
       MF_CASSANDRA_WRITER_DB_KEYSPACE: "mainflux"

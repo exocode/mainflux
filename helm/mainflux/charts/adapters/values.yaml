@@ -6,11 +6,11 @@ coap:
   enabled: true
 
 http:
-  enabled: false
+  enabled: true
 
 mqtt:
   enabled: true
 
 ws:
-  enabled: false
+  enabled: true
 

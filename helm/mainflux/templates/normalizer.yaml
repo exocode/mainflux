@@ -46,7 +46,7 @@ spec:
       - name: {{ .Values.normalizer.name }}
         image: {{ .Values.normalizerImage }}
         ports:
-        - port: {{ .Values.normalizer.port }}
+        - containerPort: {{ .Values.normalizer.port }}
         imagePullPolicy: {{ .Values.global.pullPolicy }}
         env:
         {{- range $key, $value := .Values.normalizer.env }}

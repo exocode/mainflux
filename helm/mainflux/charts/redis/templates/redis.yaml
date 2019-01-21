@@ -29,7 +29,7 @@ spec:
       - name: {{ .Values.redis.name }}
         image: {{ .Values.redisImage }}
         ports:
-        - port: {{ .Values.redis.port }}
+        - containerPort: {{ .Values.redis.port }}
         imagePullPolicy: {{ .Values.global.pullPolicy }}
         resources:
           requests:

@@ -16,7 +16,6 @@ apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
   name: normalizer
-  namespace: grpc-services
 spec:
   scaleTargetRef:
     apiVersion: extensions/v1beta1
@@ -48,7 +47,7 @@ spec:
         imagePullPolicy: Always
         env:
         - name: MF_NATS_URL
-          value: "nats://nats-cluster-metrics.nats-io:4222"
+          value: "nats://nats-cluster.nats-io:4222"
         - name: MF_NORMALIZER_PORT
           value: "8184"
         livenessProbe:

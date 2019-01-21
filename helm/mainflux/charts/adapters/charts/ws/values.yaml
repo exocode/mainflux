@@ -4,10 +4,10 @@
 wsAdapterImage: "mainflux/ws:latest"
 
 adapterName: "ws-adapter"
-apdaterPort: 8186
+adapterPort: 8186
 adapterEnv:
   MF_THINGS_URL: "things:8183"
-  MF_NATS_URL: "nats://nats:4222"
+  MF_NATS_URL: "nats://nats-cluster.nats-io:4222"
   MF_WS_ADAPTER_PORT: "8186"
   MF_WS_ADAPTER_LOG_LEVEL: "debug"
 

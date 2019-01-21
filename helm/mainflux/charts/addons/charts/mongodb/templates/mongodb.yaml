@@ -12,7 +12,7 @@ spec:
     - {{ .Values.volumes.accessMode }}
   hostPath:
     path: {{ .Values.volumes.mongodb.path }}
-  persistentVolumeReclaimPolicy: Recycle
+  persistentVolumeReclaimPolicy: Delete
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1

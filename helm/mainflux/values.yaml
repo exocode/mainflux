@@ -9,6 +9,7 @@ thingsImage: mainflux/things:latest
 usersPostgresImage: postgres:10.2-alpine
 thingsPostgresImage: postgres:10.2-alpine
 normalizerImage: mainflux/normalizer:latest
+dashfluxImage: mainflux/dashflux:latest
 #redisThingsImage: redis:5.0-alpine
 #redisImage: redis:4.0.9-alpine
 
@@ -37,18 +38,18 @@ normalizer:
   name: "normalizer"
   port: 8184
   env:
-      MF_NATS_URL: "nats://nats:4222"
+      MF_NATS_URL: "nats://nats-cluster.nats-io:4222"
       MF_NORMALIZER_PORT: "8184"
       MF_NORMALIZER_LOG_LEVEL: "debug"
 
 usersDb:
   name: "mainflux-users-postgres"
-  container_ports:
-    dbPort: "5432"
+  port: "5432"
   env:
-    POSTGRESS_USER: "mainflux"
-    POSTGRESS_PASSWORD: "mainflux"
-    POSTGRESS_DB: "users"
+    POSTGRES_USER: "mainflux"
+    POSTGRES_PASSWORD: "mainflux"
+    POSTGRES_DB: "users"
+    PGDATA: "/var/lib/postgresql/data/mainflux-users-postgres-data"
 
 users:
   name: "users"
@@ -71,12 +72,11 @@ users:
 
 thingsDb:
   name: "mainflux-things-postgres"
-  container_ports:
-    dbPort: "5432"
+  port: "5432"
   env:
-    POSTGRESS_USER: "mainflux"
-    POSTGRESS_PASSWORD: "mainflux"
-    POSTGRESS_DB: "things"
+    POSTGRES_USER: "mainflux"
+    POSTGRES_PASSWORD: "mainflux"
+    POSTGRES_DB: "things"
     PGDATA: "/var/lib/postgresql/data/mainflux-things-postgres-data"
 
 # TODO include redis for things
@@ -100,7 +100,8 @@ things:
     MF_THINGS_LOG_LEVEL: "debug"
     MF_THINGS_DB_USER: "mainflux"
     MF_THINGS_DB_PASS: "mainflux"
-    MF_THINGS_CACHE_URL: "things-redis:6379"
+    MF_THINGS_CACHE_URL: "redis-master:6379"
+    MF_THINGS_DB: "things"
 
 redis:
   name: "mainflux-redis"
@@ -131,7 +132,7 @@ global:
 
   replicas: 1
 
-  namespace: slice1
+  namespace: 
 
   hpa:
     min: 1

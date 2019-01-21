@@ -40,7 +40,7 @@ writer:
   port: 8901
   env:
       MF_MONGO_WRITER_LOG_LEVEL: "debug"
-      MF_NATS_URL: "nats://nats:4222"
+      MF_NATS_URL: "nats://nats-cluster.nats-io:4222"
       MF_MONGO_WRITER_PORT: "8901"
       MF_MONGO_WRITER_DB_NAME: "mainflux"
       MF_MONGO_WRITER_DB_HOST: "mainflux-mongodb"

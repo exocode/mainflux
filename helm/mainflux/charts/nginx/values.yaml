@@ -22,7 +22,7 @@ volumes:
     subPath: "dhparam.pem"
   nginxConf:
     mountPath: "/etc/nginx/nginx.conf"
-    subPath: "nginx-conf"
+    subPath: "nginx.conf"
 
 nginx:
   fullname: "mainflux-nginx"
