@@ -43,7 +43,7 @@ spec:
     apiVersion: extensions/v1beta1
     kind: Deployment
     name: mqtt-adapter
-  minReplicas: 1
+  minReplicas: 3
   maxReplicas: 10
   metrics:
   - type: Resource
