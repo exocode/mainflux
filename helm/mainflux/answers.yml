@@ -1,0 +1,20 @@
+categories:
+  - IOT
+questions:
+  - variable: volumeDriver
+    options:
+      - "pod"
+      - "node"
+    default: "123.456.789.0"
+    description: "Enter the Floating IP from your Hetzner account. The one you wanna point to the target."
+    type: string
+    label: Volume Driver
+    required: true
+    group: "Volumes"
+  - variable: volumeSize
+    default: "10Gi"
+    description: "The size of the volume"
+    type: string
+    label: Volume Size
+    required: true
+    group: "Volumes"
