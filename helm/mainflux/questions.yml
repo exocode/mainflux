@@ -15,33 +15,37 @@ questions:
     label: Volume Size
     required: true
     group: "Volumes"
-  - group: "Database"
+  - variable: env.open.DATABASE
+    description: "Select prefered Database (tested only with InfluxDB)"
+    label: "Database"
+    required: true
+    type: enum
+    group: "Database"
     options:
       - "InfluxDB"
       - "PostgreSQL"
-    show_subquestion_if: "InfluxDB"
-    subquestions:
-      - variable: admin_username
-        show_if: "env.open.STORAGE=InfluxDB"
-        default: "admin"
-        description: "Username for InfluxDB"
-        type: string
-        label: "InfluxDB Admin Username"
-      - variable: admin_password
-        show_if: "env.open.STORAGE=InfluxDB"
-        default: "admin"
-        description: "Password for InfluxDB"
-        type: string
-        label: "InfluxDB Admin password"
-      - variable: admin_username
-        show_if: "env.open.STORAGE=PostgreSQL"
-        default: "admin"
-        description: "Username for PostgreSQL"
-        type: string
-        label: "PostgreSQL Admin Username"
-      - variable: admin_password
-        show_if: "env.open.STORAGE=PostgreSQL"
-        default: "admin"
-        description: "Password for PostgreSQL"
-        type: string
-        label: "PostgreSQL Admin password"
+  # Database settings
+  - variable: admin_username
+    show_if: "env.open.DATABASE=InfluxDB"
+    default: "admin"
+    description: "Username for InfluxDB"
+    type: string
+    label: "InfluxDB Admin Username"
+  - variable: admin_password
+    show_if: "env.open.DATABASE=InfluxDB"
+    default: "admin"
+    description: "Password for InfluxDB"
+    type: string
+    label: "InfluxDB Admin password"
+  - variable: admin_username
+    show_if: "env.open.DATABASE=PostgreSQL"
+    default: "admin"
+    description: "Username for PostgreSQL"
+    type: string
+    label: "PostgreSQL Admin Username"
+  - variable: admin_password
+    show_if: "env.open.DATABASE=PostgreSQL"
+    default: "admin"
+    description: "Password for PostgreSQL"
+    type: string
+    label: "PostgreSQL Admin password"
