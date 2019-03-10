@@ -15,10 +15,3 @@ questions:
     label: Volume Size
     required: true
     group: "Volumes"
-  - variable: replicaCount
-    default: 3
-    description: "amount of deployments"
-    type: int
-    label: Replica Count
-    required: true
-    group: "Mainflux"
