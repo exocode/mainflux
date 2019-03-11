@@ -16,19 +16,63 @@ questions:
     required: true
     group: "Volumes"
 
-  # Users DB
+  # usersDB
   - variable: usersDb.env.POSTGRES_USER
-    label: "PostgreSQL Admin Username"
-    show_if: "env.open.DATABASE=PostgreSQL"
-    default: "admin"
-    description: "Username for PostgreSQL"
+    label: "usersDB Admin Username"
+    default: "mainflux"
+    description: "Username for usersDB"
     type: string
     group: "PostgreSQL"
+
   - variable: usersDb.env.POSTGRES_PASSWORD
-    label: "PostgreSQL Admin password"
-    show_if: "env.open.DATABASE=PostgreSQL"
-    default: "admin"
-    description: "Password for PostgreSQL"
+    label: "password for usersDB"
+    default: "mainflux"
+    description: "Password for usersDB"
+    type: string
+    group: "PostgreSQL"
+
+  # Users
+  - variable: users.env.MF_USERS_DB_USER
+    label: "Users Admin password"
+    default: "mainflux"
+    description: "Username for Users"
+    type: string
+    group: "PostgreSQL"
+
+  - variable: users.env.MF_USERS_DB_PASS
+    label: "Users Admin password"
+    default: "mainflux"
+    description: "Password for Users"
+    type: string
+    group: "PostgreSQL"
+
+  # ThingsDB
+  - variable: thingsDB.env.POSTGRES_USER
+    label: "ThingsDB Admin Username"
+    default: "mainflux"
+    description: "Username for ThingsDB"
+    type: string
+    group: "PostgreSQL"
+
+  - variable: thingsDB.env.POSTGRES_PASSWORD
+    label: "ThingsDB Admin password"
+    default: "mainflux"
+    description: "Password for ThingsDB"
+    type: string
+    group: "PostgreSQL"
+
+  # Things
+  - variable: things.env.POSTGRES_PASSWORD
+    label: "Things Admin password"
+    default: "mainflux"
+    description: "Username for Things"
+    type: string
+    group: "PostgreSQL"
+
+  - variable: things.env.POSTGRES_USER
+    label: "Things Admin password"
+    default: "mainflux"
+    description: "Password for Things"
     type: string
     group: "PostgreSQL"
 
@@ -38,9 +82,10 @@ questions:
     label: "Database"
     required: true
     type: enum
-    group: "Database"
     options:
       - "InfluxDB"
+    group: "Database"
+
   # InfluxDB
   - variable: usersDb.env.INFLUX_USER
     label: "InfluxDB Admin Username"
@@ -48,9 +93,12 @@ questions:
     default: "admin"
     description: "Username for InfluxDB"
     type: string
+    group: "Database"
+
   - variable: usersDb.env.INFLUX_PASSWORD
     label: "InfluxDB Admin password"
     show_if: "env.open.DATABASE=InfluxDB"
     default: "admin"
     description: "Password for InfluxDB"
     type: string
+    group: "Database"
