@@ -15,6 +15,21 @@ questions:
     label: Volume Size
     required: true
     group: "Volumes"
+  # Users DB
+  - variable: usersDb.env.POSTGRES_USER
+    label: "PostgreSQL Admin Username"
+    show_if: "env.open.DATABASE=PostgreSQL"
+    default: "admin"
+    description: "Username for PostgreSQL"
+    type: string
+  - variable: usersDb.env.POSTGRES_PASSWORD
+    label: "PostgreSQL Admin password"
+    show_if: "env.open.DATABASE=PostgreSQL"
+    default: "admin"
+    description: "Password for PostgreSQL"
+    type: string
+
+  # Database settings
   - variable: env.open.DATABASE
     description: "Select prefered Database (tested only with InfluxDB)"
     label: "Database"
@@ -23,29 +38,29 @@ questions:
     group: "Database"
     options:
       - "InfluxDB"
-      - "PostgreSQL"
-  # Database settings
-  - variable: admin_username
+      - "CassandraDB"
+      - "MongoDB"
+  - variable: usersDb.env.INFLUX_USER
+    label: "InfluxDB Admin Username"
     show_if: "env.open.DATABASE=InfluxDB"
     default: "admin"
     description: "Username for InfluxDB"
     type: string
-    label: "InfluxDB Admin Username"
-  - variable: admin_password
+  - variable: usersDb.env.INFLUX_PASSWORD
+    label: "InfluxDB Admin password"
     show_if: "env.open.DATABASE=InfluxDB"
     default: "admin"
     description: "Password for InfluxDB"
     type: string
+  - variable: usersDb.env.INFLUX_USER
+    label: "InfluxDB Admin Username"
+    show_if: "env.open.DATABASE=InfluxDB"
+    default: "admin"
+    description: "Username for InfluxDB"
+    type: string
+  - variable: usersDb.env.INFLUX_PASSWORD
     label: "InfluxDB Admin password"
-  - variable: admin_username
-    show_if: "env.open.DATABASE=PostgreSQL"
+    show_if: "env.open.DATABASE=InfluxDB"
     default: "admin"
-    description: "Username for PostgreSQL"
+    description: "Password for InfluxDB"
     type: string
-    label: "PostgreSQL Admin Username"
-  - variable: admin_password
-    show_if: "env.open.DATABASE=PostgreSQL"
-    default: "admin"
-    description: "Password for PostgreSQL"
-    type: string
-    label: "PostgreSQL Admin password"
