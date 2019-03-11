@@ -1,6 +1,14 @@
 categories:
   - IOT
 questions:
+  - variable: global.replicas
+    default: 3
+    description: "Amount of instances"
+    type: int
+    label: Global Replicas
+    required: true
+    group: "Deployment"
+
   - variable: volumes.driver
     default: "csi.hetzner.cloud"
     description: "Enter the Floating IP from your Hetzner account. The one you wanna point to the target."
