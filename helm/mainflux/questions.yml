@@ -95,18 +95,52 @@ questions:
     group: "Database"
 
   # InfluxDB
-  - variable: usersDb.env.INFLUX_USER
-    label: "InfluxDB Admin Username"
+  - variable: influxdb.INFLUXDB_ADMIN_USER
+    label: "InfluxDB Username"
     show_if: "env.open.DATABASE=InfluxDB"
-    default: "admin"
+    default: "mainflux"
     description: "Username for InfluxDB"
     type: string
     group: "Database"
 
-  - variable: usersDb.env.INFLUX_PASSWORD
-    label: "InfluxDB Admin password"
+  - variable: influxdb.INFLUXDB_ADMIN_PASSWORD
+    label: "InfluxDB password"
     show_if: "env.open.DATABASE=InfluxDB"
-    default: "admin"
+    default: "mainflux"
     description: "Password for InfluxDB"
+    type: string
+    group: "Database"
+
+  # Writer
+  - variable: writer.env.MF_INFLUX_WRITER_DB_USER
+    label: "Writer Username"
+    show_if: "env.open.DATABASE=InfluxDB"
+    default: "mainflux"
+    description: "Username for Writer"
+    type: string
+    group: "Database"
+
+  - variable: writer.env.MF_INFLUX_WRITER_DB_PASS
+    label: "Writer password"
+    show_if: "env.open.DATABASE=InfluxDB"
+    default: "mainflux"
+    description: "Password for Writer"
+    type: string
+    group: "Database"
+
+  # Reader
+  - variable: reader.env.MF_INFLUX_READER_DB_USER
+    label: "Reader Username"
+    show_if: "env.open.DATABASE=InfluxDB"
+    default: "mainflux"
+    description: "Username for Reader"
+    type: string
+    group: "Database"
+
+  - variable: reader.env.MF_INFLUX_READER_DB_PASS
+    label: "Reader password"
+    show_if: "env.open.DATABASE=InfluxDB"
+    default: "mainflux"
+    description: "Password for Reader"
     type: string
     group: "Database"
