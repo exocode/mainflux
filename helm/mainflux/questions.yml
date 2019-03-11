@@ -18,14 +18,14 @@ questions:
 
   # usersDB
   - variable: usersDb.env.POSTGRES_USER
-    label: "usersDB Admin Username"
+    label: "usersDB Username"
     default: "mainflux"
     description: "Username for usersDB"
     type: string
     group: "PostgreSQL"
 
   - variable: usersDb.env.POSTGRES_PASSWORD
-    label: "password for usersDB"
+    label: "usersDB Password"
     default: "mainflux"
     description: "Password for usersDB"
     type: string
@@ -62,17 +62,17 @@ questions:
     group: "PostgreSQL"
 
   # Things
-  - variable: things.env.POSTGRES_PASSWORD
-    label: "Things Admin password"
+  - variable: things.env.POSTGRES_USER
+    label: "Things User"
     default: "mainflux"
-    description: "Username for Things"
+    description: "Password for Things"
     type: string
     group: "PostgreSQL"
 
-  - variable: things.env.POSTGRES_USER
-    label: "Things Admin password"
+  - variable: things.env.POSTGRES_PASSWORD
+    label: "Things password"
     default: "mainflux"
-    description: "Password for Things"
+    description: "Username for Things"
     type: string
     group: "PostgreSQL"
 
