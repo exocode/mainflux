@@ -15,6 +15,7 @@ questions:
     label: Volume Size
     required: true
     group: "Volumes"
+
   # Users DB
   - variable: usersDb.env.POSTGRES_USER
     label: "PostgreSQL Admin Username"
@@ -22,12 +23,14 @@ questions:
     default: "admin"
     description: "Username for PostgreSQL"
     type: string
+    group: "PostgreSQL"
   - variable: usersDb.env.POSTGRES_PASSWORD
     label: "PostgreSQL Admin password"
     show_if: "env.open.DATABASE=PostgreSQL"
     default: "admin"
     description: "Password for PostgreSQL"
     type: string
+    group: "PostgreSQL"
 
   # Database settings
   - variable: env.open.DATABASE
@@ -38,20 +41,7 @@ questions:
     group: "Database"
     options:
       - "InfluxDB"
-      - "CassandraDB"
-      - "MongoDB"
-  - variable: usersDb.env.INFLUX_USER
-    label: "InfluxDB Admin Username"
-    show_if: "env.open.DATABASE=InfluxDB"
-    default: "admin"
-    description: "Username for InfluxDB"
-    type: string
-  - variable: usersDb.env.INFLUX_PASSWORD
-    label: "InfluxDB Admin password"
-    show_if: "env.open.DATABASE=InfluxDB"
-    default: "admin"
-    description: "Password for InfluxDB"
-    type: string
+  # InfluxDB
   - variable: usersDb.env.INFLUX_USER
     label: "InfluxDB Admin Username"
     show_if: "env.open.DATABASE=InfluxDB"
